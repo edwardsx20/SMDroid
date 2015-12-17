@@ -1,0 +1,7 @@
+C:\Workspace\SalesforceMobileSDK-Android\native\TemplateApp\build\intermediates\classes\debug
+C:\Workspace\SalesforceMobileSDK-Android\native\TemplateApp\build\intermediates\pre-dexed\debug\android-junit-report-1.5.8-d0e7baca44d82bca2c1c25eb357665336c99bc7f.jar
+C:\Workspace\SalesforceMobileSDK-Android\native\TemplateApp\build\intermediates\pre-dexed\debug\httpmime-4.3.2-ebe47ac3021a434bf6eb84e283c68e118cde7637.jar
+C:\Workspace\SalesforceMobileSDK-Android\native\TemplateApp\build\intermediates\pre-dexed\debug\volley_android-4.4.2_r2-c7362a1292f10c4beae6e3ea10c1498314513b4b.jar
+C:\Workspace\SalesforceMobileSDK-Android\native\TemplateApp\build\intermediates\pre-dexed\debug\apache-mime4j-0.7.2-60f55f6c7e5c26aec46224c20c236ef283a55aa3.jar
+C:\Workspace\SalesforceMobileSDK-Android\native\TemplateApp\build\intermediates\pre-dexed\debug\classes-ccb80c6f97e9994eddfddb1abf7bf65e5700882a.jar
+C:\Workspace\SalesforceMobileSDK-Android\native\TemplateApp\build\intermediates\pre-dexed\debug\guava-18.0-627f7006391b2b9c2cf0830a817310763b8acc29.jar

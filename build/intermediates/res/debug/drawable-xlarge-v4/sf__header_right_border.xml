@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient 
+        android:startColor="#ececed" 
+        android:endColor="#74777f"
+        android:angle="270"
+     />
+</shape><!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/drawable-xlarge/sf__header_right_border.xml --><!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/native/TemplateApp/build/intermediates/exploded-aar/com.salesforce.androidsdk/SalesforceSDK/unspecified/res/drawable-xlarge-v4/sf__header_right_border.xml -->

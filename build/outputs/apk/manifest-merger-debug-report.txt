@@ -1,0 +1,199 @@
+-- Merging decision tree log ---
+manifest
+ADDED from AndroidManifest.xml:3:1
+	xmlns:android
+		ADDED from AndroidManifest.xml:3:11
+	package
+		ADDED from AndroidManifest.xml:4:2
+	android:versionName
+		ADDED from AndroidManifest.xml:6:2
+	android:versionCode
+		ADDED from AndroidManifest.xml:5:2
+		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from AndroidManifest.xml:0:0
+	android:installLocation
+		ADDED from AndroidManifest.xml:7:2
+application
+ADDED from AndroidManifest.xml:9:2
+MERGED from com.salesforce.androidsdk:SalesforceSDK:unspecified:21:5
+	android:label
+		ADDED from AndroidManifest.xml:10:6
+	android:icon
+		ADDED from AndroidManifest.xml:9:15
+	android:manageSpaceActivity
+		ADDED from AndroidManifest.xml:12:3
+	android:name
+		ADDED from AndroidManifest.xml:11:3
+activity#com.salesforce.samples.templateapp.MainActivity
+ADDED from AndroidManifest.xml:15:3
+	android:label
+		ADDED from AndroidManifest.xml:16:7
+	android:theme
+		ADDED from AndroidManifest.xml:17:4
+	android:name
+		ADDED from AndroidManifest.xml:15:13
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:18:4
+action#android.intent.action.MAIN
+ADDED from AndroidManifest.xml:19:5
+	android:name
+		ADDED from AndroidManifest.xml:19:13
+category#android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:20:5
+	android:name
+		ADDED from AndroidManifest.xml:20:15
+uses-sdk
+ADDED from AndroidManifest.xml:25:5
+MERGED from com.salesforce.androidsdk:SalesforceSDK:unspecified:7:5
+	android:targetSdkVersion
+		ADDED from AndroidManifest.xml:26:9
+	android:minSdkVersion
+		ADDED from AndroidManifest.xml:25:15
+permission#com.salesforce.samples.templateapp.C2D_MESSAGE
+ADDED from AndroidManifest.xml:33:5
+	android:protectionLevel
+		ADDED from AndroidManifest.xml:34:9
+	android:name
+		ADDED from AndroidManifest.xml:33:17
+uses-permission#com.salesforce.samples.templateapp.C2D_MESSAGE
+ADDED from AndroidManifest.xml:36:5
+	android:name
+		ADDED from AndroidManifest.xml:36:22
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:11:5
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:11:22
+uses-permission#android.permission.AUTHENTICATE_ACCOUNTS
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:12:5
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:12:22
+uses-permission#android.permission.GET_ACCOUNTS
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:13:5
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:13:22
+uses-permission#android.permission.INTERNET
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:14:5
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:14:22
+uses-permission#android.permission.MANAGE_ACCOUNTS
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:15:5
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:15:22
+uses-permission#android.permission.USE_CREDENTIALS
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:16:5
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:16:22
+uses-permission#android.permission.WAKE_LOCK
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:17:5
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:17:22
+uses-permission#android.permission.GET_TASKS
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:18:5
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:18:22
+uses-permission#com.google.android.c2dm.permission.RECEIVE
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:19:5
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:19:22
+service#com.salesforce.androidsdk.auth.AuthenticatorService
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:24:9
+	android:exported
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:26:13
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:25:13
+intent-filter#android.accounts.AccountAuthenticator
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:27:13
+action#android.accounts.AccountAuthenticator
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:28:17
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:28:25
+meta-data#android.accounts.AccountAuthenticator
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:31:13
+	android:resource
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:33:17
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:32:17
+activity#com.salesforce.androidsdk.ui.LoginActivity
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:37:9
+	android:theme
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:39:13
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:38:13
+activity#com.salesforce.androidsdk.ui.PasscodeActivity
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:42:9
+	android:theme
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:44:13
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:43:13
+activity#com.salesforce.androidsdk.ui.ManageSpaceActivity
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:47:9
+	android:theme
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:50:13
+	android:excludeFromRecents
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:49:13
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:48:13
+activity#com.salesforce.androidsdk.ui.ServerPickerActivity
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:53:9
+	android:theme
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:56:13
+	android:excludeFromRecents
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:55:13
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:54:13
+activity#com.salesforce.androidsdk.ui.AccountSwitcherActivity
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:59:9
+	android:theme
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:62:13
+	android:excludeFromRecents
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:61:13
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:60:13
+receiver#com.salesforce.androidsdk.push.PushBroadcastReceiver
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:68:9
+	android:exported
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:70:13
+	android:permission
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:71:13
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:69:13
+intent-filter#@string/app_package+com.google.android.c2dm.intent.RECEIVE
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:72:13
+action#com.google.android.c2dm.intent.RECEIVE
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:73:17
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:73:25
+category#@string/app_package
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:75:17
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:75:27
+intent-filter#@string/app_package+com.google.android.c2dm.intent.REGISTRATION
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:77:13
+action#com.google.android.c2dm.intent.REGISTRATION
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:78:17
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:78:25
+receiver#com.salesforce.androidsdk.push.PushService$RetryRegistrationAlarmReceiver
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:83:9
+	android:exported
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:85:13
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:84:13
+receiver#com.salesforce.androidsdk.push.PushService$SFDCRegistrationRetryAlarmReceiver
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:86:9
+	android:exported
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:88:13
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:87:13
+receiver#com.salesforce.androidsdk.push.PushService$UnregisterRetryAlarmReceiver
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:89:9
+	android:exported
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:91:13
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:90:13
+service#com.salesforce.androidsdk.push.PushService
+ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:93:9
+	android:exported
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:95:13
+	android:name
+		ADDED from com.salesforce.androidsdk:SalesforceSDK:unspecified:94:13

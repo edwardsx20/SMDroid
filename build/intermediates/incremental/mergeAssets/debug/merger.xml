@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="unspecified"><source path="C:\Workspace\SalesforceMobileSDK-Android\native\TemplateApp\build\intermediates\exploded-aar\com.salesforce.androidsdk\SalesforceSDK\unspecified\assets"/></dataSet><dataSet config="main"><source path="C:\Workspace\SalesforceMobileSDK-Android\native\TemplateApp\assets"/></dataSet><dataSet config="debug"><source path="C:\Workspace\SalesforceMobileSDK-Android\native\TemplateApp\src\debug\assets"/></dataSet></merger>
