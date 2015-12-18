@@ -23,6 +23,7 @@ dependencies {
   compile project(':libs:cordova-android:framework')
   compile 'com.journeyapps:zxing-android-embedded:3.0.3@aar'
   compile 'com.google.zxing:core:3.2.0'
+  compile 'com.android.support:design:22.2.0'
 }
 
 android {
