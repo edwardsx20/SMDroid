@@ -7,4 +7,3 @@
 	android:drawable="@drawable/sf__refresh_loader"
 	android:duration="600"
 />
-<!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/drawable-xlarge/sf__progress_spinner.xml -->

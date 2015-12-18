@@ -3,4 +3,3 @@
     <server name="Production" url="https://login.salesforce.com"/>
     <server name="Sandbox" url="https://test.salesforce.com"/>
 </servers>
-<!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/xml/servers.xml -->

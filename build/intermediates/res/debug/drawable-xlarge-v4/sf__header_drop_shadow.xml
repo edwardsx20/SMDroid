@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-  android:src="@drawable/sf__nav_shadow"
-  android:tileMode="repeat"
-/>
-<!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/drawable-xlarge/sf__header_drop_shadow.xml --><!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/native/TemplateApp/build/intermediates/exploded-aar/com.salesforce.androidsdk/SalesforceSDK/unspecified/res/drawable-xlarge-v4/sf__header_drop_shadow.xml -->

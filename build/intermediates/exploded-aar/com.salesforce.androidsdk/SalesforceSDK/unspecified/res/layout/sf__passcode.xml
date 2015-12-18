@@ -27,4 +27,4 @@
         <TextView android:id="@+id/sf__passcode_instructions"
             style="@style/SalesforceSDK.Passcode.Text.Instructions" />
     </LinearLayout>
-</RelativeLayout><!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/layout/sf__passcode.xml -->
+</RelativeLayout>

@@ -12,7 +12,9 @@
       <module fileurl="file://$PROJECT_DIR$/../SampleApps/NativeSqlAggregator/NativeSqlAggregator.iml" filepath="$PROJECT_DIR$/../SampleApps/NativeSqlAggregator/NativeSqlAggregator.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../hybrid/SampleApps/NoteSync/NoteSync.iml" filepath="$PROJECT_DIR$/../../hybrid/SampleApps/NoteSync/NoteSync.iml" />
       <module fileurl="file://$PROJECT_DIR$/../SampleApps/RestExplorer/RestExplorer.iml" filepath="$PROJECT_DIR$/../SampleApps/RestExplorer/RestExplorer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SMDroid.iml" filepath="$PROJECT_DIR$/SMDroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../SalesforceMobileSDK-Android.iml" filepath="$PROJECT_DIR$/../../SalesforceMobileSDK-Android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/SalesforceSDK/SalesforceSDK.iml" filepath="$PROJECT_DIR$/libs/SalesforceSDK/SalesforceSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../libs/SalesforceSDK/SalesforceSDK.iml" filepath="$PROJECT_DIR$/../../libs/SalesforceSDK/SalesforceSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../hybrid/SampleApps/SampleApps.iml" filepath="$PROJECT_DIR$/../../hybrid/SampleApps/SampleApps.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../hybrid/SampleApps/SimpleSync/SimpleSync.iml" filepath="$PROJECT_DIR$/../../hybrid/SampleApps/SimpleSync/SimpleSync.iml" />
@@ -20,10 +22,12 @@
       <module fileurl="file://$PROJECT_DIR$/../../hybrid/SampleApps/SmartStoreExplorer/SmartStoreExplorer.iml" filepath="$PROJECT_DIR$/../../hybrid/SampleApps/SmartStoreExplorer/SmartStoreExplorer.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../libs/SmartSync/SmartSync.iml" filepath="$PROJECT_DIR$/../../libs/SmartSync/SmartSync.iml" />
       <module fileurl="file://$PROJECT_DIR$/../SampleApps/SmartSyncExplorer/SmartSyncExplorer.iml" filepath="$PROJECT_DIR$/../SampleApps/SmartSyncExplorer/SmartSyncExplorer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TemplateApp.iml" filepath="$PROJECT_DIR$/TemplateApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../hybrid/SampleApps/UserList/UserList.iml" filepath="$PROJECT_DIR$/../../hybrid/SampleApps/UserList/UserList.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../hybrid/SampleApps/VFConnector/VFConnector.iml" filepath="$PROJECT_DIR$/../../hybrid/SampleApps/VFConnector/VFConnector.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/cordova-android/cordova-android.iml" filepath="$PROJECT_DIR$/libs/cordova-android/cordova-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/cordova-android/framework/framework.iml" filepath="$PROJECT_DIR$/libs/cordova-android/framework/framework.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../hybrid/hybrid.iml" filepath="$PROJECT_DIR$/../../hybrid/hybrid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/libs.iml" filepath="$PROJECT_DIR$/libs/libs.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../libs/libs.iml" filepath="$PROJECT_DIR$/../../libs/libs.iml" />
       <module fileurl="file://$PROJECT_DIR$/../native.iml" filepath="$PROJECT_DIR$/../native.iml" />
       <module fileurl="file://$PROJECT_DIR$/../SampleApps/native-SampleApps.iml" filepath="$PROJECT_DIR$/../SampleApps/native-SampleApps.iml" />

@@ -10,4 +10,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none" />
-</ScrollView><!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/layout/sf__login.xml -->
+</ScrollView>

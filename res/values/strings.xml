@@ -5,7 +5,7 @@
 	<string name="app_package">com.salesforce.samples.templateapp</string>
     <string name="welcome">Bienvenido %s</string>
 	<string name="logout_button">Salir</string>
-	<string name="fetch_contacts_button">Traer contactos</string>
-	<string name="fetch_accounts_button">Traer cuentas</string>
+	<string name="fetch_contacts_button">Escanear codigo</string>
+	<string name="fetch_accounts_button">Escanear</string>
 	<string name="clear_button">Limpiar</string>
 </resources>

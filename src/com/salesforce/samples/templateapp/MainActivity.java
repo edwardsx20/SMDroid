@@ -26,13 +26,21 @@
  */
 package com.salesforce.samples.templateapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.VolleyError;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
 import com.salesforce.androidsdk.rest.RestClient;
 import com.salesforce.androidsdk.rest.RestClient.AsyncRequestCallback;
@@ -51,11 +59,16 @@ import java.util.ArrayList;
  */
 public class MainActivity extends SalesforceActivity {
 
-    private RestClient client;
-    private ArrayAdapter<String> listAdapter;
+	private static final String LIST_INSTANCE_STATE = "0x1";
+	private RestClient client;
+	private ArrayAdapter<String> listAdapter;
 	private JSONArray sfResult;
 
+	private ListView mlistView;
 	private EditText txtRbd;
+
+	private Parcelable mListInstanceState;
+	private String scanResult;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,19 +76,35 @@ public class MainActivity extends SalesforceActivity {
 
 		// Setup view
 		setContentView(R.layout.main);
+		mlistView = ((ListView) findViewById(R.id.contacts_list));
+
+		// Create list adapter
+		listAdapter = new ArrayAdapter<>(this, R.layout.list_black_text, new ArrayList<String>());
+		mlistView.setAdapter(listAdapter);
+
+		if (savedInstanceState != null) {
+			mListInstanceState = savedInstanceState.getParcelable(LIST_INSTANCE_STATE);
+		}
 
 		// Views
-
 		txtRbd = (EditText) findViewById(R.id.txtRbd);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedState) {
+		super.onSaveInstanceState(savedState);
+		mListInstanceState = mlistView.onSaveInstanceState();
+		savedState.putParcelable(LIST_INSTANCE_STATE, mListInstanceState);
 	}
 
 	@Override
 	public void onResume() {
 		// Hide everything until we are logged in
 		findViewById(R.id.root).setVisibility(View.INVISIBLE);
-		// Create list adapter
-		listAdapter = new ArrayAdapter<String>(this, R.layout.list_black_text, new ArrayList<String>());
-		((ListView) findViewById(R.id.contacts_list)).setAdapter(listAdapter);
+
+		if (mListInstanceState != null) {
+			mlistView.onRestoreInstanceState(mListInstanceState);
+		}
 
 		super.onResume();
 	}
@@ -113,8 +142,57 @@ public class MainActivity extends SalesforceActivity {
 	 * @param v
 	 * @throws UnsupportedEncodingException
 	 */
+
 	public void onFetchContactsClick(View v) throws UnsupportedEncodingException {
-        sendRequest("SELECT Name FROM Contact");
+
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+		if (result != null) {
+			if (result.getContents() == null) {
+				Log.d("MainActivity", "Cancelled scan");
+				Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+			} else {
+				Log.d("MainActivity", "Scanned");
+				Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+				scanResult = result.getContents();
+
+				if (scanResult != null) {
+					try {
+						sendRequest("SELECT ProductCode, Name FROM Product2 WHERE ISBN__c = " + scanResult + ".0");
+						//sendRequest("SELECT Name FROM Contact LIMIT 1");
+
+						Log.d("RequestResponse", String.valueOf((sfResult != null)));
+
+						if (sfResult != null) {
+							if (sfResult.length() > 0) {
+								String lineStr;
+								for (int i = 0; i < sfResult.length(); i++) {
+									lineStr = sfResult.getJSONObject(i).getString("ProductCode") + " - " + sfResult.getJSONObject(i).getString("Name");
+									listAdapter.add(lineStr);
+								}
+							} else {
+								Toast.makeText(this, "No se han encontrado resultados para " + scanResult, Toast.LENGTH_SHORT).show();
+							}
+						}
+					} catch (Exception e) {
+						onError(this, e.toString());
+					} finally {
+						sfResult = null;
+					}
+				}
+			}
+		} else {
+			Log.d("MainActivity", "Weird");
+			// This is important, otherwise the result will not be passed to the fragment
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
+
+	private void onError(Context context, String msg) {
+		Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
 	}
 
 	/**
@@ -123,24 +201,14 @@ public class MainActivity extends SalesforceActivity {
 	 * @param v
 	 * @throws UnsupportedEncodingException
 	 */
-	public void onFetchAccountsClick(View v) throws UnsupportedEncodingException, JSONException {
-		sendRequest("SELECT Name FROM OpportunityLineItem WHERE Opportunity.Account.RBD__c = " + txtRbd.getText().toString() + " LIMIT 30");
-
-		try {
-			if(sfResult != null) {
-
-				listAdapter.clear();
-				for (int i = 0; i < sfResult.length(); i++) {
-					listAdapter.add(sfResult.getJSONObject(i).getString("Name"));
-				}
-			}
-		} catch(JSONException e) {
-
-		} catch (Exception e) {
-
-		} finally {
-			sfResult = null;
-		}
+	public void onGetProduct2Click(View v) throws UnsupportedEncodingException, JSONException {
+		IntentIntegrator integrator = new IntentIntegrator(this);
+		integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+		integrator.setPrompt("Escanea un codigo");
+		integrator.setCameraId(0);  // Use a specific camera of the device
+		integrator.setBeepEnabled(false);
+		integrator.setBarcodeImageEnabled(true);
+		integrator.initiateScan();
 	}
 
 	private void sendRequest(String soql) throws UnsupportedEncodingException {
@@ -158,9 +226,13 @@ public class MainActivity extends SalesforceActivity {
 
 			@Override
 			public void onError(Exception exception) {
-                Toast.makeText(MainActivity.this,
-                               MainActivity.this.getString(SalesforceSDKManager.getInstance().getSalesforceR().stringGenericError(), exception.toString()),
-                               Toast.LENGTH_LONG).show();
+				VolleyError volleyError = (VolleyError) exception;
+				NetworkResponse response = volleyError.networkResponse;
+				String json = new String(response.data);
+				Log.e("RestError", json);
+				Toast.makeText(MainActivity.this,
+						MainActivity.this.getString(SalesforceSDKManager.getInstance().getSalesforceR().stringGenericError(), exception.toString()),
+						Toast.LENGTH_LONG).show();
 			}
 		});
 	}

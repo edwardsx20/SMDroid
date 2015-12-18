@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true"  android:drawable="@drawable/sf__header_refresh_press"/>
-    <item android:state_selected="false" android:drawable="@drawable/sf__header_refresh" />
-</selector>
-<!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/drawable-xlarge/sf__header_refresh_states.xml --><!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/native/TemplateApp/build/intermediates/exploded-aar/com.salesforce.androidsdk/SalesforceSDK/unspecified/res/drawable-xlarge-v4/sf__header_refresh_states.xml -->

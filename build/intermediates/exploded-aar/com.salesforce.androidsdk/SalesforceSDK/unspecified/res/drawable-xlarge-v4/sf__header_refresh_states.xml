@@ -3,4 +3,3 @@
     <item android:state_pressed="true"  android:drawable="@drawable/sf__header_refresh_press"/>
     <item android:state_selected="false" android:drawable="@drawable/sf__header_refresh" />
 </selector>
-<!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/drawable-xlarge/sf__header_refresh_states.xml -->

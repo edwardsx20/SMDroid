@@ -11,4 +11,4 @@
 	<include layout="@layout/sf__server_picker_list" />
 
 	</LinearLayout>
-</ScrollView><!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/layout/sf__server_picker.xml -->
+</ScrollView>

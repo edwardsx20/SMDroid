@@ -1,7 +1,28 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:1.5.+'
+  }
+}
+
+allprojects {
+  group = 'com.salesforce.androidsdk'
+
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+}
+
 apply plugin: 'android'
 
 dependencies {
   compile project(':libs:SalesforceSDK')
+  compile project(':libs:cordova-android:framework')
+  compile 'com.journeyapps:zxing-android-embedded:3.0.3@aar'
+  compile 'com.google.zxing:core:3.2.0'
 }
 
 android {

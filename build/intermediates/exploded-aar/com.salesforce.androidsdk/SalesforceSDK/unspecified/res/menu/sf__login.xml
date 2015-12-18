@@ -8,4 +8,4 @@
 
     <item android:id="@+id/sf__menu_reload"
         android:title="@string/sf__reload" />
-</menu><!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/menu/sf__login.xml -->
+</menu>

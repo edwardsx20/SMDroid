@@ -26,4 +26,4 @@
 		    style="@style/SalesforceSDK.ServerPicker.Button.OkCancel"
 			android:onClick="setCancelReturnValue" />
 	</LinearLayout>
-</LinearLayout><!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/layout/sf__server_picker_list.xml -->
+</LinearLayout>

@@ -4,4 +4,3 @@
 		<bitmap android:src="@drawable/sf__header_bg" />
 	</item>
 </layer-list>
-<!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/drawable-xlarge/sf__login_content_header.xml -->

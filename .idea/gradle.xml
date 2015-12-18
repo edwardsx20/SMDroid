@@ -8,32 +8,11 @@
         <option name="gradleJvm" value="1.7" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../.." />
-            <option value="$PROJECT_DIR$/../../hybrid" />
-            <option value="$PROJECT_DIR$/../../hybrid/SampleApps" />
-            <option value="$PROJECT_DIR$/../../hybrid/SampleApps/AccountEditor" />
-            <option value="$PROJECT_DIR$/../../hybrid/SampleApps/ContactExplorer" />
-            <option value="$PROJECT_DIR$/../../hybrid/SampleApps/HybridFileExplorer" />
-            <option value="$PROJECT_DIR$/../../hybrid/SampleApps/NoteSync" />
-            <option value="$PROJECT_DIR$/../../hybrid/SampleApps/SimpleSync" />
-            <option value="$PROJECT_DIR$/../../hybrid/SampleApps/SmartStoreExplorer" />
-            <option value="$PROJECT_DIR$/../../hybrid/SampleApps/UserList" />
-            <option value="$PROJECT_DIR$/../../hybrid/SampleApps/VFConnector" />
-            <option value="$PROJECT_DIR$/../../hybrid/test" />
-            <option value="$PROJECT_DIR$/../../hybrid/test/ForcePluginsTest" />
-            <option value="$PROJECT_DIR$/../../libs" />
-            <option value="$PROJECT_DIR$/../../libs/SalesforceSDK" />
-            <option value="$PROJECT_DIR$/../../libs/SmartStore" />
-            <option value="$PROJECT_DIR$/../../libs/SmartSync" />
-            <option value="$PROJECT_DIR$/.." />
-            <option value="$PROJECT_DIR$/../SampleApps" />
-            <option value="$PROJECT_DIR$/../SampleApps/AppConfigurator" />
-            <option value="$PROJECT_DIR$/../SampleApps/ConfiguredApp" />
-            <option value="$PROJECT_DIR$/../SampleApps/FileExplorer" />
-            <option value="$PROJECT_DIR$/../SampleApps/NativeSqlAggregator" />
-            <option value="$PROJECT_DIR$/../SampleApps/RestExplorer" />
-            <option value="$PROJECT_DIR$/../SampleApps/SmartSyncExplorer" />
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/libs" />
+            <option value="$PROJECT_DIR$/libs/SalesforceSDK" />
+            <option value="$PROJECT_DIR$/libs/cordova-android" />
+            <option value="$PROJECT_DIR$/libs/cordova-android/framework" />
           </set>
         </option>
       </GradleProjectSettings>

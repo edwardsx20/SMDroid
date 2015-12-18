@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv"
-    android:textColor="#000000"
-    android:layout_width="fill_parent"
-    android:gravity=""
-    android:text="sample"
-    android:layout_height="fill_parent"/><!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/native/TemplateApp/res/layout/list_black_text.xml -->

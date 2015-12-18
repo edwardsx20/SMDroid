@@ -32,4 +32,4 @@
 		    android:text="@string/sf__server_url_default_cancel"
 		    style="@style/SalesforceSDK.ServerPicker.Button.OkCancel" />
 	</LinearLayout>
-</LinearLayout><!-- From: file:/C:/Workspace/SalesforceMobileSDK-Android/libs/SalesforceSDK/res/layout/sf__custom_server_url.xml -->
+</LinearLayout>
