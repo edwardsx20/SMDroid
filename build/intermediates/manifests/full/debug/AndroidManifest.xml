@@ -60,6 +60,7 @@
         <!-- Launcher screen -->
         <activity
             android:name="com.salesforce.samples.templateapp.MainActivity"
+            android:configChanges="orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Material.Light" >
             <intent-filter>

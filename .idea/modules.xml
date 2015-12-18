@@ -25,6 +25,7 @@
       <module fileurl="file://$PROJECT_DIR$/../../hybrid/SampleApps/UserList/UserList.iml" filepath="$PROJECT_DIR$/../../hybrid/SampleApps/UserList/UserList.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../hybrid/SampleApps/VFConnector/VFConnector.iml" filepath="$PROJECT_DIR$/../../hybrid/SampleApps/VFConnector/VFConnector.iml" />
       <module fileurl="file://$PROJECT_DIR$/libs/cordova-android/cordova-android.iml" filepath="$PROJECT_DIR$/libs/cordova-android/cordova-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/cordova-android/cordova-android.iml" filepath="$PROJECT_DIR$/libs/cordova-android/cordova-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/libs/cordova-android/framework/framework.iml" filepath="$PROJECT_DIR$/libs/cordova-android/framework/framework.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../hybrid/hybrid.iml" filepath="$PROJECT_DIR$/../../hybrid/hybrid.iml" />
       <module fileurl="file://$PROJECT_DIR$/libs/libs.iml" filepath="$PROJECT_DIR$/libs/libs.iml" />

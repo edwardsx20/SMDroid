@@ -31,14 +31,6 @@
 		      android:onClick="onClearClick"
 		      android:text="@string/clear_button" />
 	</LinearLayout>
-
-	<LinearLayout
-		android:orientation="horizontal"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/linear_product_parent">
-
-	</LinearLayout>
 </LinearLayout>
 
 
