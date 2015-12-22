@@ -52,8 +52,11 @@ import com.salesforce.androidsdk.ui.sfnative.SalesforceActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import cl.edicsm.control.ViewDetail;
 
@@ -114,7 +117,6 @@ public class MainActivity extends SalesforceActivity {
         } catch (NullPointerException e) {
             Log.e("Error", e.toString());
         }
-
     }
 
     @Override
@@ -136,7 +138,6 @@ public class MainActivity extends SalesforceActivity {
         findViewById(R.id.root).setVisibility(View.INVISIBLE);
 
         Log.i("EVENT", "onResume normal");
-
         super.onResume();
     }
 
@@ -151,7 +152,7 @@ public class MainActivity extends SalesforceActivity {
     }
 
     /**
-     * Called when "Logout" button is clicked.
+     * Cierra sesion.
      *
      * @param v
      */
@@ -160,7 +161,7 @@ public class MainActivity extends SalesforceActivity {
     }
 
     /**
-     * Called when "Clear" button is clicked.
+     * Limpia el layout de registros.
      *
      * @param v
      */
@@ -174,6 +175,7 @@ public class MainActivity extends SalesforceActivity {
         }
     }
 
+    // Obtiene resultado de codigo de barra
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -204,6 +206,28 @@ public class MainActivity extends SalesforceActivity {
         }
     }
 
+    // Crea toast
+    private void makeToast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Inicia lector de codigos de barra
+     *
+     * @param v
+     * @throws UnsupportedEncodingException
+     */
+    public void onGetProduct2Click(View v) throws UnsupportedEncodingException, JSONException {
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+        integrator.setPrompt("Escanea un codigo");
+        integrator.setCameraId(0);  // Use a specific camera of the device
+        integrator.setBeepEnabled(false);
+        integrator.setBarcodeImageEnabled(true);
+        integrator.initiateScan();
+    }
+
+    // Agrega producto al layout
     private void agregarProducto(String msg, String value) {
         // Obtiene el grupo
         LinearLayout parentLayout = (LinearLayout) findViewById(R.id.root);
@@ -229,26 +253,41 @@ public class MainActivity extends SalesforceActivity {
         parentLayout.addView(linearLayout);
     }
 
-    private void makeToast(Context context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    // Crea registro
+    public void createProducto(View v) throws IOException {
+        try {
+            Map sObject = new HashMap<>();
+            sObject.put("Name", "TestNativeApp");
+            sObject.put("RBD__c", 102349);
+
+            // Objeto request
+            RestRequest restRequest = RestRequest.getRequestForCreate(getString(R.string.api_version), "Account", sObject);
+
+            // Ejecuta Async
+            client.sendAsync(restRequest, new AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) {
+                    Log.i("APITest", "Success");
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    VolleyError volleyError = (VolleyError) exception;
+                    NetworkResponse response = volleyError.networkResponse;
+                    String json = new String(response.data);
+                    Log.e("RestError", exception.toString());
+                    Log.e("RestError", json);
+                    Toast.makeText(MainActivity.this,
+                            MainActivity.this.getString(SalesforceSDKManager.getInstance().getSalesforceR().stringGenericError(), exception.toString()),
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (Exception e) {
+            Log.e("APITest", e.toString());
+        }
     }
 
-    /**
-     * Called when "Fetch Accounts" button is clicked
-     *
-     * @param v
-     * @throws UnsupportedEncodingException
-     */
-    public void onGetProduct2Click(View v) throws UnsupportedEncodingException, JSONException {
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
-        integrator.setPrompt("Escanea un codigo");
-        integrator.setCameraId(0);  // Use a specific camera of the device
-        integrator.setBeepEnabled(false);
-        integrator.setBarcodeImageEnabled(true);
-        integrator.initiateScan();
-    }
-
+    // Obtiene producto y agrega a la lista
     private void getProducto(String isbn) throws UnsupportedEncodingException {
         String soql = "SELECT ProductCode, Name FROM Product2 WHERE ISBN__c = " + isbn + ".0";
         RestRequest restRequest = RestRequest.getRequestForQuery(getString(R.string.api_version), soql);
