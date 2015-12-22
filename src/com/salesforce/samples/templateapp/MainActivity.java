@@ -32,7 +32,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,16 +53,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+
+import cl.edicsm.control.ViewDetail;
 
 /**
  * Main activity
  */
 public class MainActivity extends SalesforceActivity {
-
-    private static final String LIST_INSTANCE_STATE = "0x1";
     private RestClient client;
-    private ArrayAdapter<String> listAdapter;
     private JSONArray sfResult;
+    ArrayList<ViewDetail> myViews = new ArrayList<>();
 
     private String scanResult;
 
@@ -69,20 +71,71 @@ public class MainActivity extends SalesforceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.i("EVENT", "onCreate");
+
         // Setup view
         setContentView(R.layout.main);
+
+        if (savedInstanceState != null) {
+            myViews = savedInstanceState.getParcelableArrayList("myViews");
+
+            if (myViews != null) {
+
+                for (ViewDetail vd : myViews) {
+                    Log.i("SAVEDSTATE", "Se agrega producto.");
+                    agregarProducto(vd.getValue(), vd.getCantidad());
+                }
+            }
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedState) {
         super.onSaveInstanceState(savedState);
 
+        myViews = new ArrayList<>();
+
+        Log.i("EVENT", "onSaveInstanceState");
+
+        try {
+            for (int i = 0; i < ((ViewGroup) findViewById(R.id.root)).getChildCount(); i++) {
+                ViewGroup parentVg = (ViewGroup) ((ViewGroup) findViewById(R.id.root)).getChildAt(i);
+
+                if (parentVg.getChildCount() == 2 && parentVg.getId() == R.id.vgroup) {
+                    TextView tView = (TextView) parentVg.getChildAt(0);
+                    EditText eText = (EditText) parentVg.getChildAt(1);
+
+                    myViews.add(new ViewDetail(tView.getText().toString(), eText.getText().toString()));
+                }
+            }
+
+            savedState.putParcelableArrayList("myViews", myViews);
+
+        } catch (NullPointerException e) {
+            Log.e("Error", e.toString());
+        }
+
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedState) {
+        super.onRestoreInstanceState(savedState);
+        //get the views back...
+        myViews = savedState.getParcelableArrayList("myViews");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i("EVENT", "onPause");
     }
 
     @Override
     public void onResume() {
         // Hide everything until we are logged in
         findViewById(R.id.root).setVisibility(View.INVISIBLE);
+
+        Log.i("EVENT", "onResume normal");
 
         super.onResume();
     }
@@ -92,7 +145,7 @@ public class MainActivity extends SalesforceActivity {
         // Keeping reference to rest client
         this.client = client;
 
-
+        Log.i("EVENT", "onResume RestClient");
         // Show everything
         findViewById(R.id.root).setVisibility(View.VISIBLE);
     }
@@ -112,7 +165,13 @@ public class MainActivity extends SalesforceActivity {
      * @param v
      */
     public void onClearClick(View v) {
-        //listAdapter.clear();
+        ViewGroup root = (ViewGroup) findViewById(R.id.root);
+        for (int i = 0; i < root.getChildCount(); i++) {
+            View vw = findViewById(R.id.vgroup);
+            if (vw != null) {
+                root.removeView(vw);
+            }
+        }
     }
 
     @Override
@@ -129,20 +188,7 @@ public class MainActivity extends SalesforceActivity {
 
                 if (scanResult != null) {
                     try {
-                        sendRequest("SELECT ProductCode, Name FROM Product2 WHERE ISBN__c = " + scanResult + ".0");
-
-                        Log.d("RequestResponse", String.valueOf((sfResult != null)));
-                        if (sfResult != null) {
-                            if (sfResult.length() > 0) {
-                                String lineStr;
-                                for (int i = 0; i < sfResult.length(); i++) {
-                                    lineStr = sfResult.getJSONObject(i).getString("ProductCode") + " - " + sfResult.getJSONObject(i).getString("Name");
-                                    addView(lineStr);
-                                }
-                            } else {
-                                makeToast(this, "No se han encontrado resultados para " + scanResult);
-                            }
-                        }
+                        getProducto(scanResult);
                     } catch (Exception e) {
                         Log.e("RequestError", e.toString());
                         makeToast(this, e.toString());
@@ -158,7 +204,7 @@ public class MainActivity extends SalesforceActivity {
         }
     }
 
-    private void addView(String msg) {
+    private void agregarProducto(String msg, String value) {
         // Obtiene el grupo
         LinearLayout parentLayout = (LinearLayout) findViewById(R.id.root);
 
@@ -169,38 +215,23 @@ public class MainActivity extends SalesforceActivity {
         // Obtiene el layout a insertar
         view = layoutInflater.inflate(R.layout.text_layout, parentLayout, false);
 
-        // Obtiene el layout
+        // Obtiene views
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.vgroup);
+        EditText et = (EditText) linearLayout.findViewById(R.id.editText);
         TextView tv = (TextView) linearLayout.findViewById(R.id.textView);
+
         tv.setText(msg);
+        if (value != "0") {
+            et.setText(value);
+        }
+        ;
+
         parentLayout.addView(linearLayout);
     }
 
     private void makeToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
-
-/*
-    public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-
-		// Get a layout inflater (inflater from getActivity() or
-		// getSupportActivity() works as well)
-		LayoutInflater inflater = (LayoutInflater) this
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View newView = inflater.inflate(R.layout.main, null);
-		// This just inflates the view but doesn't add it to any thing.
-		// You need to add it to the root view of the fragment
-		ViewGroup rootView = (ViewGroup) findViewById(R.id.root);
-		// Remove all the existing views from the root view.
-		// This is also a good place to recycle any resources you won't need
-		// anymore
-		rootView.removeAllViews();
-		rootView.addView(newView);
-		// Voila, you have the new view setup
-
-	}
-*/
 
     /**
      * Called when "Fetch Accounts" button is clicked
@@ -218,7 +249,8 @@ public class MainActivity extends SalesforceActivity {
         integrator.initiateScan();
     }
 
-    private void sendRequest(String soql) throws UnsupportedEncodingException {
+    private void getProducto(String isbn) throws UnsupportedEncodingException {
+        String soql = "SELECT ProductCode, Name FROM Product2 WHERE ISBN__c = " + isbn + ".0";
         RestRequest restRequest = RestRequest.getRequestForQuery(getString(R.string.api_version), soql);
 
         client.sendAsync(restRequest, new AsyncRequestCallback() {
@@ -226,6 +258,19 @@ public class MainActivity extends SalesforceActivity {
             public void onSuccess(RestRequest request, RestResponse result) {
                 try {
                     sfResult = result.asJSONObject().getJSONArray("records");
+
+                    Log.d("RequestResponse", String.valueOf((sfResult != null)));
+                    if (sfResult != null) {
+                        if (sfResult.length() > 0) {
+                            String lineStr;
+                            for (int i = 0; i < sfResult.length(); i++) {
+                                lineStr = sfResult.getJSONObject(i).getString("ProductCode") + " - " + sfResult.getJSONObject(i).getString("Name");
+                                agregarProducto(lineStr, "0");
+                            }
+                        } else {
+                            makeToast(getApplicationContext(), "No se han encontrado resultados para " + scanResult);
+                        }
+                    }
                 } catch (Exception e) {
                     onError(e);
                 }

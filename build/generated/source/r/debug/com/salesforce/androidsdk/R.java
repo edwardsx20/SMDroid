@@ -156,29 +156,29 @@ public final class R {
 		public static final int sf__switch_account = 0x7f07004f;
 	}
 	public static final class style {
-		public static final int SalesforceSDK = 0x7f0900a7;
-		public static final int SalesforceSDKActionBar = 0x7f0900bd;
-		public static final int SalesforceSDK_AccountSwitcher = 0x7f0900a8;
-		public static final int SalesforceSDK_AccountSwitcher_Button = 0x7f0900a9;
-		public static final int SalesforceSDK_AccountSwitcher_Button_AddAccount = 0x7f0900aa;
-		public static final int SalesforceSDK_AccountSwitcher_Button_Apply = 0x7f0900ab;
-		public static final int SalesforceSDK_AccountSwitcher_List = 0x7f0900ac;
-		public static final int SalesforceSDK_ActionBarTheme = 0x7f0900ad;
-		public static final int SalesforceSDK_Passcode = 0x7f0900ae;
-		public static final int SalesforceSDK_Passcode_Background = 0x7f0900af;
-		public static final int SalesforceSDK_Passcode_Box = 0x7f0900b0;
-		public static final int SalesforceSDK_Passcode_Text = 0x7f0900b1;
-		public static final int SalesforceSDK_Passcode_Text_Entry = 0x7f0900b2;
-		public static final int SalesforceSDK_Passcode_Text_Error = 0x7f0900b3;
-		public static final int SalesforceSDK_Passcode_Text_ForgotPassword = 0x7f0900b4;
-		public static final int SalesforceSDK_Passcode_Text_Instructions = 0x7f0900b5;
-		public static final int SalesforceSDK_Passcode_Text_Title = 0x7f0900b6;
-		public static final int SalesforceSDK_ServerPicker = 0x7f0900b7;
-		public static final int SalesforceSDK_ServerPicker_Button = 0x7f0900b8;
-		public static final int SalesforceSDK_ServerPicker_ButtonContainer = 0x7f0900ba;
-		public static final int SalesforceSDK_ServerPicker_Button_OkCancel = 0x7f0900b9;
-		public static final int SalesforceSDK_ServerPicker_EditText = 0x7f0900bb;
-		public static final int SalesforceSDK_ServerPicker_List = 0x7f0900bc;
+		public static final int SalesforceSDK = 0x7f0900a8;
+		public static final int SalesforceSDKActionBar = 0x7f0900be;
+		public static final int SalesforceSDK_AccountSwitcher = 0x7f0900a9;
+		public static final int SalesforceSDK_AccountSwitcher_Button = 0x7f0900aa;
+		public static final int SalesforceSDK_AccountSwitcher_Button_AddAccount = 0x7f0900ab;
+		public static final int SalesforceSDK_AccountSwitcher_Button_Apply = 0x7f0900ac;
+		public static final int SalesforceSDK_AccountSwitcher_List = 0x7f0900ad;
+		public static final int SalesforceSDK_ActionBarTheme = 0x7f0900ae;
+		public static final int SalesforceSDK_Passcode = 0x7f0900af;
+		public static final int SalesforceSDK_Passcode_Background = 0x7f0900b0;
+		public static final int SalesforceSDK_Passcode_Box = 0x7f0900b1;
+		public static final int SalesforceSDK_Passcode_Text = 0x7f0900b2;
+		public static final int SalesforceSDK_Passcode_Text_Entry = 0x7f0900b3;
+		public static final int SalesforceSDK_Passcode_Text_Error = 0x7f0900b4;
+		public static final int SalesforceSDK_Passcode_Text_ForgotPassword = 0x7f0900b5;
+		public static final int SalesforceSDK_Passcode_Text_Instructions = 0x7f0900b6;
+		public static final int SalesforceSDK_Passcode_Text_Title = 0x7f0900b7;
+		public static final int SalesforceSDK_ServerPicker = 0x7f0900b8;
+		public static final int SalesforceSDK_ServerPicker_Button = 0x7f0900b9;
+		public static final int SalesforceSDK_ServerPicker_ButtonContainer = 0x7f0900bb;
+		public static final int SalesforceSDK_ServerPicker_Button_OkCancel = 0x7f0900ba;
+		public static final int SalesforceSDK_ServerPicker_EditText = 0x7f0900bc;
+		public static final int SalesforceSDK_ServerPicker_List = 0x7f0900bd;
 	}
 	public static final class xml {
 		public static final int authenticator = 0x7f050000;
