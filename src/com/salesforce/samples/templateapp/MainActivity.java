@@ -29,6 +29,7 @@ package com.salesforce.samples.templateapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,9 @@ public class MainActivity extends SalesforceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         Log.i("EVENT", "onCreate");
 
@@ -248,23 +252,13 @@ public class MainActivity extends SalesforceActivity {
         if (value != "0") {
             et.setText(value);
         }
-        ;
 
         parentLayout.addView(linearLayout);
     }
 
     // Crea registro
     public void createProducto(View v) throws IOException {
-        try {
-            Map sObject = new HashMap<>();
-            sObject.put("Name", "TestNativeApp");
-            sObject.put("RBD__c", 102349);
-
-            // Objeto request
-            RestRequest restRequest = RestRequest.getRequestForCreate(getString(R.string.api_version), "Account", sObject);
-
-            // Ejecuta Async
-            client.sendAsync(restRequest, new AsyncRequestCallback() {
+        AsyncRequestCallback asyncCallBack = new AsyncRequestCallback() {
                 @Override
                 public void onSuccess(RestRequest request, RestResponse response) {
                     Log.i("APITest", "Success");
@@ -281,10 +275,64 @@ public class MainActivity extends SalesforceActivity {
                             MainActivity.this.getString(SalesforceSDKManager.getInstance().getSalesforceR().stringGenericError(), exception.toString()),
                             Toast.LENGTH_LONG).show();
                 }
-            });
+        };
+
+        try {
+            Map sObject;
+            ArrayList<Map> objetos = new ArrayList<>();
+
+            for (int i = 0; i < ((ViewGroup) findViewById(R.id.root)).getChildCount(); i++) {
+
+                ViewGroup parentVg = (ViewGroup) ((ViewGroup) findViewById(R.id.root)).getChildAt(i);
+                sObject = new HashMap<>();
+
+                if (parentVg.getChildCount() == 2 && parentVg.getId() == R.id.vgroup) {
+                    TextView tView = (TextView) parentVg.getChildAt(0);
+                    EditText eText = (EditText) parentVg.getChildAt(1);
+
+                    String productCode = tView.getText().toString().split(" ")[0];
+                    String name = tView.getText().toString().split("-")[1];
+                    String Id = getId("Product2", "SELECT Id FROM Product2 WHERE ProductCode = '" + productCode + "'");
+                    if (Id != null) {
+                        sObject.put("Producto__c", Id);
+                        sObject.put("Name", name);
+                        sObject.put("Cuenta__c", "001J000001gmdjp");
+                        sObject.put("Presupuesto_Muestras__c", "a0JJ000000A9j1cMAB");
+                        sObject.put("Cantidad_entregada__c", eText.getText().toString());
+
+                        objetos.add(sObject);
+                    } else {
+                        Log.d("QueryId", "Failed");
+                    }
+                }
+            }
+
+
+            for (Map sobj : objetos) {
+                // Objeto request
+                RestRequest restRequest = RestRequest.getRequestForCreate(getString(R.string.api_version), "MuestrasLineItem__c", sobj);
+
+                // Ejecuta Async
+                client.sendAsync(restRequest, asyncCallBack);
+            }
+
         } catch (Exception e) {
             Log.e("APITest", e.toString());
         }
+    }
+
+    private String getId(String sObject, String soql) {
+        String result = null;
+        try {
+            RestRequest restRequest = RestRequest.getRequestForQuery(getString(R.string.api_version), soql);
+            RestResponse response = client.sendSync(restRequest);
+
+            sfResult = response.asJSONObject().getJSONArray("records");
+            result = sfResult.getJSONObject(0).getString("Id");
+        } catch (Exception e) {
+            Log.e("GETID", e.toString());
+        }
+        return result;
     }
 
     // Obtiene producto y agrega a la lista
