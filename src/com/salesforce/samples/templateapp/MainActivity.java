@@ -26,6 +26,7 @@
  */
 package com.salesforce.samples.templateapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -59,6 +60,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import cl.edicsm.control.Controller;
+import cl.edicsm.control.RestCallBack;
 import cl.edicsm.control.ViewDetail;
 
 /**
@@ -259,22 +262,22 @@ public class MainActivity extends SalesforceActivity {
     // Crea registro
     public void createProducto(View v) throws IOException {
         AsyncRequestCallback asyncCallBack = new AsyncRequestCallback() {
-                @Override
-                public void onSuccess(RestRequest request, RestResponse response) {
-                    Log.i("APITest", "Success");
-                }
+            @Override
+            public void onSuccess(RestRequest request, RestResponse response) {
+                Log.i("APITest", "Success");
+            }
 
-                @Override
-                public void onError(Exception exception) {
-                    VolleyError volleyError = (VolleyError) exception;
-                    NetworkResponse response = volleyError.networkResponse;
-                    String json = new String(response.data);
-                    Log.e("RestError", exception.toString());
-                    Log.e("RestError", json);
-                    Toast.makeText(MainActivity.this,
-                            MainActivity.this.getString(SalesforceSDKManager.getInstance().getSalesforceR().stringGenericError(), exception.toString()),
-                            Toast.LENGTH_LONG).show();
-                }
+            @Override
+            public void onError(Exception exception) {
+                VolleyError volleyError = (VolleyError) exception;
+                NetworkResponse response = volleyError.networkResponse;
+                String json = new String(response.data);
+                Log.e("RestError", exception.toString());
+                Log.e("RestError", json);
+                Toast.makeText(MainActivity.this,
+                        MainActivity.this.getString(SalesforceSDKManager.getInstance().getSalesforceR().stringGenericError(), exception.toString()),
+                        Toast.LENGTH_LONG).show();
+            }
         };
 
         try {
@@ -292,7 +295,8 @@ public class MainActivity extends SalesforceActivity {
 
                     String productCode = tView.getText().toString().split(" ")[0];
                     String name = tView.getText().toString().split("-")[1];
-                    String Id = getId("Product2", "SELECT Id FROM Product2 WHERE ProductCode = '" + productCode + "'");
+                    String Id = getId("SELECT Id FROM Product2 WHERE ProductCode = '" + productCode + "'");
+                    Log.d("GETID", "FINISH");
                     if (Id != null) {
                         sObject.put("Producto__c", Id);
                         sObject.put("Name", name);
@@ -321,14 +325,30 @@ public class MainActivity extends SalesforceActivity {
         }
     }
 
-    private String getId(String sObject, String soql) {
+    private String getId(String soql) {
         String result = null;
         try {
             RestRequest restRequest = RestRequest.getRequestForQuery(getString(R.string.api_version), soql);
-            RestResponse response = client.sendSync(restRequest);
 
-            sfResult = response.asJSONObject().getJSONArray("records");
-            result = sfResult.getJSONObject(0).getString("Id");
+
+            ProgressDialog progress = new ProgressDialog(this);
+            progress.setMessage("Actualizando datos, por favor espere...");
+
+            Log.d("GETID", "Start");
+
+            Controller cont = new Controller(this, MainActivity.this, progress, client);
+            cont.setRestRequest(restRequest);
+            RestResponse response = cont.execute();
+
+            Log.d("CallBackCall", response.toString());
+
+            JSONArray resultado = response.asJSONObject().getJSONArray("records");
+            result = resultado.getJSONObject(0).getString("Id");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             Log.e("GETID", e.toString());
         }

@@ -33,7 +33,7 @@ import com.salesforce.androidsdk.app.SalesforceSDKManager;
 /**
  * Application class for our application.
  */
-public class TemplateApp extends Application {
+public class SMDroidActivity extends Application {
 
 	@Override
 	public void onCreate() {
