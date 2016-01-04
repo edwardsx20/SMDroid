@@ -17,6 +17,6 @@
         <EditText
             android:id="@+id/edt_rbd"
             android:layout_width="140sp"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
     </TableRow>
 </TableLayout>

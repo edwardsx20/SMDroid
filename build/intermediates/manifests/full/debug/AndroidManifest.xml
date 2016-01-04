@@ -59,13 +59,21 @@
 
         <!-- Launcher screen -->
         <activity
-            android:name="com.salesforce.samples.templateapp.MainActivity"
+            android:name="com.salesforce.samples.templateapp.MenuActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Material.Light" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.salesforce.samples.templateapp.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Material.Light" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <!-- Service required for authentication -->

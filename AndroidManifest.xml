@@ -12,7 +12,8 @@
 		android:manageSpaceActivity="com.salesforce.androidsdk.ui.ManageSpaceActivity">
 
 		<!-- Launcher screen -->
-		<activity android:name=".MainActivity"
+        <activity
+            android:name=".MenuActivity"
 		    android:label="@string/app_name"
 			android:theme="@android:style/Theme.Material.Light">
 			<intent-filter>
@@ -20,6 +21,15 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Material.Light">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
 	</application>
 
 	<uses-sdk

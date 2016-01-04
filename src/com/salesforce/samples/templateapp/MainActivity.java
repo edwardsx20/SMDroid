@@ -296,8 +296,8 @@ public class MainActivity extends SalesforceActivity {
 
             ProgressDialog mProgressDialog = new ProgressDialog(this);
 
+            // Does the magic
             Controller c = new Controller(this, client, mProgressDialog);
-
             c.getId(params);
 
             onClearClick(null);
