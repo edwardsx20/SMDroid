@@ -57,11 +57,9 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import cl.edicsm.control.Controller;
-import cl.edicsm.control.RestCallBack;
 import cl.edicsm.control.ViewDetail;
 
 /**
@@ -264,7 +262,7 @@ public class MainActivity extends SalesforceActivity {
         AsyncRequestCallback asyncCallBack = new AsyncRequestCallback() {
             @Override
             public void onSuccess(RestRequest request, RestResponse response) {
-                Log.i("APITest", "Success");
+                Log.i("createProducto", "Success");
             }
 
             @Override
@@ -272,22 +270,18 @@ public class MainActivity extends SalesforceActivity {
                 VolleyError volleyError = (VolleyError) exception;
                 NetworkResponse response = volleyError.networkResponse;
                 String json = new String(response.data);
-                Log.e("RestError", exception.toString());
-                Log.e("RestError", json);
-                Toast.makeText(MainActivity.this,
-                        MainActivity.this.getString(SalesforceSDKManager.getInstance().getSalesforceR().stringGenericError(), exception.toString()),
-                        Toast.LENGTH_LONG).show();
+                Log.e("createProducto", exception.toString());
+                Log.e("createProducto", json);
             }
         };
 
         try {
-            Map sObject;
             ArrayList<Map> objetos = new ArrayList<>();
+            final ArrayList<String[]> params = new ArrayList<>();
+            EditText edtRBD = (EditText) findViewById(R.id.edt_rbd);
 
             for (int i = 0; i < ((ViewGroup) findViewById(R.id.root)).getChildCount(); i++) {
-
                 ViewGroup parentVg = (ViewGroup) ((ViewGroup) findViewById(R.id.root)).getChildAt(i);
-                sObject = new HashMap<>();
 
                 if (parentVg.getChildCount() == 2 && parentVg.getId() == R.id.vgroup) {
                     TextView tView = (TextView) parentVg.getChildAt(0);
@@ -295,64 +289,22 @@ public class MainActivity extends SalesforceActivity {
 
                     String productCode = tView.getText().toString().split(" ")[0];
                     String name = tView.getText().toString().split("-")[1];
-                    String Id = getId("SELECT Id FROM Product2 WHERE ProductCode = '" + productCode + "'");
-                    Log.d("GETID", "FINISH");
-                    if (Id != null) {
-                        sObject.put("Producto__c", Id);
-                        sObject.put("Name", name);
-                        sObject.put("Cuenta__c", "001J000001gmdjp");
-                        sObject.put("Presupuesto_Muestras__c", "a0JJ000000A9j1cMAB");
-                        sObject.put("Cantidad_entregada__c", eText.getText().toString());
 
-                        objetos.add(sObject);
-                    } else {
-                        Log.d("QueryId", "Failed");
-                    }
+                    params.add(new String[]{edtRBD.getText().toString(), productCode, eText.getText().toString(), name});
                 }
             }
 
+            ProgressDialog mProgressDialog = new ProgressDialog(this);
 
-            for (Map sobj : objetos) {
-                // Objeto request
-                RestRequest restRequest = RestRequest.getRequestForCreate(getString(R.string.api_version), "MuestrasLineItem__c", sobj);
+            Controller c = new Controller(this, client, mProgressDialog);
 
-                // Ejecuta Async
-                client.sendAsync(restRequest, asyncCallBack);
-            }
+            c.getId(params);
+
+            onClearClick(null);
 
         } catch (Exception e) {
-            Log.e("APITest", e.toString());
+            Log.e("CreateProducto", e.toString());
         }
-    }
-
-    private String getId(String soql) {
-        String result = null;
-        try {
-            RestRequest restRequest = RestRequest.getRequestForQuery(getString(R.string.api_version), soql);
-
-
-            ProgressDialog progress = new ProgressDialog(this);
-            progress.setMessage("Actualizando datos, por favor espere...");
-
-            Log.d("GETID", "Start");
-
-            Controller cont = new Controller(this, MainActivity.this, progress, client);
-            cont.setRestRequest(restRequest);
-            RestResponse response = cont.execute();
-
-            Log.d("CallBackCall", response.toString());
-
-            JSONArray resultado = response.asJSONObject().getJSONArray("records");
-            result = resultado.getJSONObject(0).getString("Id");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            Log.e("GETID", e.toString());
-        }
-        return result;
     }
 
     // Obtiene producto y agrega a la lista
