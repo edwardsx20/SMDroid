@@ -60,6 +60,7 @@ import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.DataOutputStream;
@@ -106,7 +107,7 @@ public class RestClient {
 	 * Interface through which the result of an asynchronous request is handled.
 	 */
 	public interface AsyncRequestCallback {
-		void onSuccess(RestRequest request, RestResponse response);
+		void onSuccess(RestRequest request, RestResponse response) throws IOException, JSONException;
 		void onError(Exception exception);
 	}
 	

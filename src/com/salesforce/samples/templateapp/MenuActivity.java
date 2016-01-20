@@ -25,6 +25,11 @@ public class MenuActivity extends SalesforceActivity {
         startActivity(intent);
     }
 
+    public void onBtnConsultar(View v) {
+        Intent intent = new Intent(this, ConsultarActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onResume(RestClient client) {
         this.client = client;

@@ -190,7 +190,7 @@ public class MainActivity extends SalesforceActivity {
                 makeToast(this, "Cancelado");
             } else {
                 Log.d("MainActivity", "Scanned");
-                makeToast(this, "ISBN: " + result.getContents());
+                makeToast(this, "Contactando con Salesforce, ISBN: " + result.getContents());
                 scanResult = result.getContents();
 
                 if (scanResult != null) {
@@ -198,7 +198,7 @@ public class MainActivity extends SalesforceActivity {
                         getProducto(scanResult);
                     } catch (Exception e) {
                         Log.e("RequestError", e.toString());
-                        makeToast(this, e.toString());
+                        makeToast(this, "Ha ocurrido un error, intente nuevamente...");
                     } finally {
                         sfResult = null;
                     }

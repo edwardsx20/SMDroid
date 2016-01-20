@@ -15,9 +15,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by eaguad on 12/23/2015.
@@ -34,10 +36,49 @@ public class Controller {
     }
 
     public void getId(ArrayList<String[]> params) {
-        new GetIdTask().execute(params);
+        new InsertMuestraTask().execute(params);
+    }
+    public HashMap<String, String> consultaMuestra(String rbd) throws ExecutionException, InterruptedException {
+        return new ConsultaMuestraTask().execute(rbd).get();
     }
 
-    private class GetIdTask extends AsyncTask<ArrayList<String[]>, Void, Boolean> {
+    private class ConsultaMuestraTask extends AsyncTask<String, Void, HashMap<String, String>> {
+
+        @Override
+        protected HashMap<String, String> doInBackground(String... param) {
+            RestRequest restRequest = null;
+            final HashMap<String, String> result = null;
+            try {
+                String query = "SELECT Name, Cantidad_respaldada__c FROM MuestrasLineItem__c WHERE Tipo_transaccion__c = 'RESPALDO' Cuenta__c.RBD__c = " + param;
+                restRequest = RestRequest.getRequestForQuery(context.getString(R.string.api_version), query);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            // Ejecuta Async
+            client.sendAsync(restRequest, new RestClient.AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) throws IOException, JSONException {
+                    JSONArray resultado = response.asJSONObject().getJSONArray("records");
+
+                    for(int i = 0; i < resultado.length(); i++) {
+                        result.put(resultado.getJSONObject(i).getString("Id"), resultado.getJSONObject(i).getString("Name"));
+                    }
+
+                    Log.d("ConsultaMuestraTask", "Success");
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    Log.d("ConsultaMuestraTask", "Failed");
+                }
+            });
+
+            return result;
+        }
+    }
+
+    private class InsertMuestraTask extends AsyncTask<ArrayList<String[]>, Void, Boolean> {
         @Override
         protected void onPreExecute() {
             mProgressDialog.setTitle("Conectando con Salesforce...");
@@ -49,7 +90,7 @@ public class Controller {
             mProgressDialog.dismiss();
 
 
-            String mTitle = (result ? "Finalizado" : "Se insertaron con errores");
+            String mTitle = (result ? "Finalizado con éxito" : "Se insertaron con errores");
 
             Toast.makeText(context, mTitle, Toast.LENGTH_SHORT).show();
         }

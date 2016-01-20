@@ -22,13 +22,13 @@
 
             <EditText
                 android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:text="8877" />
+                android:layout_height="match_parent" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Consultar"
+                android:onClick="consultarMuestra"
                 android:id="@+id/btnConsultar" />
         </LinearLayout>
 
