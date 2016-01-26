@@ -3,9 +3,11 @@ package cl.edicsm.control;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.format.Time;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.salesforce.androidsdk.rest.RestClient;
 import com.salesforce.androidsdk.rest.RestRequest;
 import com.salesforce.androidsdk.rest.RestResponse;
@@ -16,7 +18,10 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -49,7 +54,7 @@ public class Controller {
             RestRequest restRequest = null;
             final HashMap<String, String> result = null;
             try {
-                String query = "SELECT Name, Cantidad_respaldada__c FROM MuestrasLineItem__c WHERE Tipo_transaccion__c = 'RESPALDO' Cuenta__c.RBD__c = " + param;
+                String query = "SELECT Id, Name, Cantidad_respaldada__c FROM MuestrasLineItem__c WHERE Cuenta__r.RBD__c = " + param[0];
                 restRequest = RestRequest.getRequestForQuery(context.getString(R.string.api_version), query);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -59,6 +64,7 @@ public class Controller {
             client.sendAsync(restRequest, new RestClient.AsyncRequestCallback() {
                 @Override
                 public void onSuccess(RestRequest request, RestResponse response) throws IOException, JSONException {
+                    android.os.Debug.waitForDebugger();
                     JSONArray resultado = response.asJSONObject().getJSONArray("records");
 
                     for(int i = 0; i < resultado.length(); i++) {
@@ -70,6 +76,8 @@ public class Controller {
 
                 @Override
                 public void onError(Exception exception) {
+                    android.os.Debug.waitForDebugger();
+                    VolleyError v = (VolleyError) exception;
                     Log.d("ConsultaMuestraTask", "Failed");
                 }
             });
@@ -102,6 +110,7 @@ public class Controller {
             String name;
             String cantidad;
             String cuentaId;
+            String muestraId;
             ArrayList<Map> objetos = new ArrayList<>();
             Boolean result = true;
 
@@ -111,14 +120,26 @@ public class Controller {
 
                     cuentaId = getId("SELECT Id FROM Account WHERE RBD__c = " + arr[0]);
                     productoId = getId("SELECT Id FROM Product2 WHERE ProductCode = '" + arr[1] + "'");
+
+                    //HARDCORE
+                    muestraId = "a0MJ0000004LGaM";
+
                     cantidad = arr[2];
                     name = arr[3];
 
                     sObject.put("Producto__c", productoId);
                     sObject.put("Name", name);
                     sObject.put("Cuenta__c", cuentaId);
-                    sObject.put("Presupuesto_Muestras__c", "a0JJ000000A9j1cMAB");
-                    sObject.put("Cantidad_entregada__c", cantidad);
+                    //sObject.put("Presupuesto_Muestras__c", "a0JJ000000A9j1cMAB");
+                    sObject.put("Cantidad_respaldada__c", cantidad);
+                    sObject.put("Muestra__c", muestraId);
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    String currentDateandTime = sdf.format(new Date());
+                    //HARDCORE
+                    sObject.put("Solicitante__c", "005G0000001CNHZ");
+                    sObject.put("Producto__c", productoId);
+                    sObject.put("Fecha__c", currentDateandTime);
 
                     objetos.add(sObject);
                 }
@@ -126,6 +147,7 @@ public class Controller {
                 for (Map sobj : objetos) {
                     // Objeto request
                     if (sobj.get("Cuenta__c") != null && sobj.get("Producto__c") != null) {
+                        android.os.Debug.waitForDebugger();
                         RestRequest restRequest = RestRequest.getRequestForCreate(context.getString(R.string.api_version), "MuestrasLineItem__c", sobj);
                         // Ejecuta Async
                         client.sendAsync(restRequest, new RestClient.AsyncRequestCallback() {
@@ -136,7 +158,12 @@ public class Controller {
 
                             @Override
                             public void onError(Exception exception) {
-                                Log.d("GetIdTask", "Failed");
+                                android.os.Debug.waitForDebugger();
+                                try {
+                                    Log.e("InsertaMuestraTask", exception.getMessage());
+                                } catch(Exception e) {
+                                    Log.e("InsertaMuestraTask", e.getMessage());
+                                }
                             }
                         });
                     }

@@ -34,7 +34,7 @@ public class ConsultarActivity extends SalesforceActivity {
     }
 
     public void consultarMuestra(View v) {
-        EditText rbd = (EditText) v;
+        EditText rbd = (EditText) findViewById(R.id.consultar_rbd);
         String strRbd = rbd.getText().toString();
         HashMap<String, String> result = null;
 

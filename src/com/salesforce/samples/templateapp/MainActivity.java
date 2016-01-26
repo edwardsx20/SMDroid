@@ -309,7 +309,7 @@ public class MainActivity extends SalesforceActivity {
 
     // Obtiene producto y agrega a la lista
     private void getProducto(String isbn) throws UnsupportedEncodingException {
-        String soql = "SELECT ProductCode, Name FROM Product2 WHERE ISBN__c = " + isbn + ".0";
+        String soql = "SELECT ProductCode, Name FROM Product2 WHERE isActive = true AND ISBN__c = " + isbn + ".0";
         RestRequest restRequest = RestRequest.getRequestForQuery(getString(R.string.api_version), soql);
 
         client.sendAsync(restRequest, new AsyncRequestCallback() {

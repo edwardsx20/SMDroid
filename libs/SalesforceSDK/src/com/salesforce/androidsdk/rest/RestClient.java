@@ -829,7 +829,7 @@ public class RestClient {
 				return requestEntity == null ? null : EntityUtils.toByteArray(requestEntity);
 			}
 			catch (IOException e) {
-				Log.e("WrappedRestRequest.getBody", "Could not read request entity", e);
+				Log.e("WrappedRequest.getBody", "Could not read request entity", e);
 				return null;
 			}
 		}
@@ -843,7 +843,13 @@ public class RestClient {
 		
 		@Override
 		protected void deliverResponse(RestResponse restResponse) {
-			callback.onSuccess(restRequest, restResponse);
+			try {
+				callback.onSuccess(restRequest, restResponse);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 
 		@Override

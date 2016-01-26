@@ -22,6 +22,7 @@
 
             <EditText
                 android:layout_width="80dp"
+                android:id="@+id/consultar_rbd"
                 android:layout_height="match_parent" />
 
             <Button
