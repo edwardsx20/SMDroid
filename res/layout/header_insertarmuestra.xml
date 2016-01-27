@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="#ffffff">
+
+    <include layout="@layout/app_bar"/>
+
+    <TableRow
+        android:padding="3dp">
+
+        <TextView
+            android:text="RBD"
+            android:textColor="@color/textColorPrimary"
+            android:layout_width="80sp"
+            android:padding="10sp"
+            android:textSize="20sp"
+            android:layout_height="match_parent" />
+
+        <EditText
+            android:id="@+id/edt_rbd"
+            android:layout_width="140sp"
+            android:inputType="number"
+            android:layout_height="wrap_content" />
+    </TableRow>
+</TableLayout>

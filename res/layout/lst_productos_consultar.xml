@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:id="@+id/consultar_vgroup"
+    android:padding="10dp"
+    android:background="#ffffff">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="140602 - PLAYGROUP SET DEL ALUMNO PROYECTO SE"
+        android:id="@+id/consultar_txtproducto"
+        android:textColor="@color/textColorPrimary"
+        android:layout_weight="1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/consultar_txtcantidad"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="24sp"
+        android:gravity="right"
+        android:layout_marginRight="80sp"
+        android:text="[ 2 ]"
+        android:layout_weight="1" />
+</LinearLayout>
+
+

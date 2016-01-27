@@ -1,16 +1,20 @@
 package cl.edicsm.control;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.text.format.Time;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.salesforce.androidsdk.rest.RestClient;
 import com.salesforce.androidsdk.rest.RestRequest;
 import com.salesforce.androidsdk.rest.RestResponse;
+import com.salesforce.samples.templateapp.ConsultarActivity;
 import com.salesforce.samples.templateapp.R;
 
 import org.json.JSONArray;
@@ -20,7 +24,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,32 +46,104 @@ public class Controller {
     public void getId(ArrayList<String[]> params) {
         new InsertMuestraTask().execute(params);
     }
-    public HashMap<String, String> consultaMuestra(String rbd) throws ExecutionException, InterruptedException {
-        return new ConsultaMuestraTask().execute(rbd).get();
+
+    public void consultaMuestra(String rbd) throws ExecutionException, InterruptedException {
+        new ConsultaMuestraTask().execute(rbd);
     }
 
-    private class ConsultaMuestraTask extends AsyncTask<String, Void, HashMap<String, String>> {
+    private void agregarProducto(String msg, String value) {
+        // Obtiene el grupo
+        Activity activity = (Activity) context;
+        LinearLayout parentLayout = (LinearLayout) activity.findViewById(R.id.consultar_root);
+
+        // Crea el inflater
+        LayoutInflater layoutInflater = activity.getLayoutInflater();
+        View view;
+
+        // Obtiene el layout a insertar
+        view = layoutInflater.inflate(R.layout.lst_productos_consultar, parentLayout, false);
+
+        // Obtiene views
+        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.consultar_vgroup);
+        TextView et = (TextView) linearLayout.findViewById(R.id.consultar_txtproducto);
+        TextView tv = (TextView) linearLayout.findViewById(R.id.consultar_txtcantidad);
+
+        tv.setText(msg);
+        et.setText(value);
+
+        parentLayout.addView(linearLayout);
+    }
+
+    private class ConsultaMuestraTask extends AsyncTask<String, Void, ArrayList<String[]>> {
 
         @Override
-        protected HashMap<String, String> doInBackground(String... param) {
+        protected void onPostExecute(ArrayList<String[]> unused) {
+            if(unused != null && unused.size() > 0) {
+                for(String[] vw : unused) {
+                    agregarProducto(vw[0], vw[1]);
+                }
+            } else {
+                Toast.makeText(context, "No se han encontrado datos.", Toast.LENGTH_SHORT).show();
+            }
+            mProgressDialog.dismiss();
+        }
+
+        @Override
+        protected ArrayList<String[]> doInBackground(String... param) {
+            //android.os.Debug.waitForDebugger();
             RestRequest restRequest = null;
-            final HashMap<String, String> result = null;
+            final ArrayList<String[]> result = new ArrayList<String[]>();
+
             try {
-                String query = "SELECT Id, Name, Cantidad_respaldada__c FROM MuestrasLineItem__c WHERE Cuenta__r.RBD__c = " + param[0];
+                String query = "SELECT Id, Producto__r.ProductCode, Name, Cantidad_respaldada__c FROM MuestrasLineItem__c WHERE Cuenta__r.RBD__c = " + param[0];
                 restRequest = RestRequest.getRequestForQuery(context.getString(R.string.api_version), query);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 
+            try {
+                RestResponse response = client.sendSync(restRequest);
+                JSONArray resultado = response.asJSONObject().getJSONArray("records");
+                
+                for(int i = 0; i < resultado.length(); i++) {
+                    String[] values = null;
+
+                    String cantidad = resultado.getJSONObject(i).getString("Cantidad_respaldada__c");
+                    String name = resultado.getJSONObject(i).getString("Name");
+                    String productcode = resultado.getJSONObject(i).getJSONObject("Producto__r").getString("ProductCode");
+
+                    if (cantidad != null && cantidad.indexOf('.') > 0) {
+                        cantidad = cantidad.substring(0, cantidad.indexOf('.'));
+                    }
+                    name = productcode + " - " + name;
+
+                    values = new String[] { cantidad, name };
+                    result.add(values);
+                }
+
+                Log.d("ConsultaMuestraTask", "Success");
+            } catch (IOException e) {
+                e.printStackTrace();
+                mProgressDialog.dismiss();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                mProgressDialog.dismiss();
+            }
+
+            /*
             // Ejecuta Async
             client.sendAsync(restRequest, new RestClient.AsyncRequestCallback() {
                 @Override
                 public void onSuccess(RestRequest request, RestResponse response) throws IOException, JSONException {
-                    android.os.Debug.waitForDebugger();
+                    //android.os.Debug.waitForDebugger();
                     JSONArray resultado = response.asJSONObject().getJSONArray("records");
 
                     for(int i = 0; i < resultado.length(); i++) {
-                        result.put(resultado.getJSONObject(i).getString("Id"), resultado.getJSONObject(i).getString("Name"));
+
+                        String cantidad = resultado.getJSONObject(i).getString("Cantidad_respaldada__c");
+                        String name = resultado.getJSONObject(i).getString("Name");
+
+                        result.put(name, cantidad);
                     }
 
                     Log.d("ConsultaMuestraTask", "Success");
@@ -81,6 +156,7 @@ public class Controller {
                     Log.d("ConsultaMuestraTask", "Failed");
                 }
             });
+            */
 
             return result;
         }
@@ -147,7 +223,6 @@ public class Controller {
                 for (Map sobj : objetos) {
                     // Objeto request
                     if (sobj.get("Cuenta__c") != null && sobj.get("Producto__c") != null) {
-                        android.os.Debug.waitForDebugger();
                         RestRequest restRequest = RestRequest.getRequestForCreate(context.getString(R.string.api_version), "MuestrasLineItem__c", sobj);
                         // Ejecuta Async
                         client.sendAsync(restRequest, new RestClient.AsyncRequestCallback() {
@@ -158,7 +233,6 @@ public class Controller {
 
                             @Override
                             public void onError(Exception exception) {
-                                android.os.Debug.waitForDebugger();
                                 try {
                                     Log.e("InsertaMuestraTask", exception.getMessage());
                                 } catch(Exception e) {

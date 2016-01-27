@@ -9,6 +9,7 @@ dependencies {
   compile files('libs/httpmime-4.3.2.jar')
   compile files('libs/apache-mime4j-0.7.2.jar')
   compile project(':libs:cordova-android:framework')
+  compile 'com.android.support:appcompat-v7:22.2.1'
 }
 
 android {

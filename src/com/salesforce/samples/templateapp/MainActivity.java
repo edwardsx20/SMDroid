@@ -31,6 +31,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,7 @@ import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.google.zxing.common.StringUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
@@ -57,7 +59,6 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Map;
 
 import cl.edicsm.control.Controller;
 import cl.edicsm.control.ViewDetail;
@@ -71,6 +72,7 @@ public class MainActivity extends SalesforceActivity {
     ArrayList<ViewDetail> myViews = new ArrayList<>();
 
     private String scanResult;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +84,10 @@ public class MainActivity extends SalesforceActivity {
         Log.i("EVENT", "onCreate");
 
         // Setup view
-        setContentView(R.layout.main);
+        setContentView(R.layout.insertar_layout);
+
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
 
         if (savedInstanceState != null) {
             myViews = savedInstanceState.getParcelableArrayList("myViews");
@@ -242,7 +247,7 @@ public class MainActivity extends SalesforceActivity {
         View view;
 
         // Obtiene el layout a insertar
-        view = layoutInflater.inflate(R.layout.text_layout, parentLayout, false);
+        view = layoutInflater.inflate(R.layout.productos_insertar, parentLayout, false);
 
         // Obtiene views
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.vgroup);
@@ -259,26 +264,18 @@ public class MainActivity extends SalesforceActivity {
 
     // Crea registro
     public void createProducto(View v) throws IOException {
-        AsyncRequestCallback asyncCallBack = new AsyncRequestCallback() {
-            @Override
-            public void onSuccess(RestRequest request, RestResponse response) {
-                Log.i("createProducto", "Success");
-            }
-
-            @Override
-            public void onError(Exception exception) {
-                VolleyError volleyError = (VolleyError) exception;
-                NetworkResponse response = volleyError.networkResponse;
-                String json = new String(response.data);
-                Log.e("createProducto", exception.toString());
-                Log.e("createProducto", json);
-            }
-        };
-
         try {
-            ArrayList<Map> objetos = new ArrayList<>();
+            //ArrayList<Map> objetos = new ArrayList<>();
             final ArrayList<String[]> params = new ArrayList<>();
             EditText edtRBD = (EditText) findViewById(R.id.edt_rbd);
+
+            String strRbd = edtRBD.getText().toString();
+
+            if (strRbd == "") {
+                makeToast(this, "Por favor, ingrese RBD.");
+
+                return;
+            }
 
             for (int i = 0; i < ((ViewGroup) findViewById(R.id.root)).getChildCount(); i++) {
                 ViewGroup parentVg = (ViewGroup) ((ViewGroup) findViewById(R.id.root)).getChildAt(i);
@@ -290,7 +287,7 @@ public class MainActivity extends SalesforceActivity {
                     String productCode = tView.getText().toString().split(" ")[0];
                     String name = tView.getText().toString().split("-")[1];
 
-                    params.add(new String[]{edtRBD.getText().toString(), productCode, eText.getText().toString(), name});
+                    params.add(new String[]{strRbd, productCode, eText.getText().toString(), name});
                 }
             }
 
