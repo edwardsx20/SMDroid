@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.salesforce.androidsdk.rest.RestClient;
 import com.salesforce.androidsdk.rest.RestRequest;
 import com.salesforce.androidsdk.rest.RestResponse;
-import com.salesforce.samples.templateapp.ConsultarActivity;
 import com.salesforce.samples.templateapp.DatosMuestraActivity;
 import com.salesforce.samples.templateapp.R;
 
@@ -55,6 +54,9 @@ public class Controller {
         new ConsultaMuestraTask().execute(rbd);
     }
 
+    public void guardarMuestra(HashMap<String, String> sObject) {
+        new GuardarDatosTask().execute(sObject);
+    }
     private void agregarProducto(String id, String msg, String value) {
         // Obtiene el grupo
         Activity activity = (Activity) context;
@@ -104,9 +106,7 @@ public class Controller {
 
         @Override
         protected void onPostExecute(Void unused) {
-
             mProgressDialog.dismiss();
-
             context.startActivity(mIntent);
         }
 
@@ -145,6 +145,7 @@ public class Controller {
                 mIntent = new Intent(context, DatosMuestraActivity.class);
                 Bundle mBundle = new Bundle();
 
+                mBundle.putString("id", id);
                 mBundle.putString("rbd", strRbd.substring(0, strRbd.indexOf(".")));
                 mBundle.putString("cuenta", strCuenta);
                 mBundle.putString("direccion", strDireccion);
@@ -257,7 +258,119 @@ public class Controller {
         }
     }
 
-    private class InsertMuestraTask extends AsyncTask<ArrayList<String[]>, Void, Boolean> {
+    private class GuardarDatosTask extends AsyncTask<HashMap<String, String>, Void, String> {
+        private String idMuestra;
+
+        @Override
+        protected void onPostExecute(String unused) {
+            Toast.makeText(context, unused, Toast.LENGTH_SHORT).show();
+
+            mProgressDialog.dismiss();
+
+            ((Activity) context).finish();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mProgressDialog.setTitle("Conectando con Salesforce...");
+            mProgressDialog.show();
+        }
+
+
+        @Override
+        protected String doInBackground(HashMap... params) {
+            //android.os.Debug.waitForDebugger();
+            String message = "Error";
+
+            HashMap<String, String> sObject = params[0];
+            HashMap<String, String> newSObject = new HashMap<>();
+
+            idMuestra = sObject.get("id");
+
+            String cuentaId = getId("SELECT Id FROM Account WHERE RBD__c = " + sObject.get("rbd"));
+            String productoId = getId("SELECT Id FROM Product2 WHERE ProductCode = '" + sObject.get("productcode") + "'");
+            String nameMuestra = getNameById("SELECT Name FROM Product2 WHERE Id = '" + productoId + "'");
+
+            if(cuentaId != null && productoId != null && nameMuestra != null ) {
+
+                //HARDCORE
+                String muestraId = "a0MJ0000004LGaM";
+
+                //newSObject.put("Muestra__c", muestraId);
+                newSObject.put("Name", nameMuestra);
+                newSObject.put("Cuenta__c", cuentaId);
+                newSObject.put("Producto__c", productoId);
+                newSObject.put("Cantidad_respaldada__c", sObject.get("cantidad"));
+
+                try {
+                    RestRequest request = RestRequest.getRequestForUpdate(context.getString(R.string.api_version), "MuestrasLineItem__c", idMuestra, (Map) newSObject);
+
+                    RestResponse response = client.sendSync(request);
+
+                    String responseStr = response.toString();
+
+                    Log.d("GuardarDatosTask", responseStr);
+
+                    if (responseStr.indexOf("error") >= 0) {
+                        message = "No se ha podido completar la operación";
+                    } else {
+                        message = "Datos guardados con éxito";
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                message = "Revise los campos e intente otra vez";
+            }
+
+            return message;
+        }
+    }
+
+    private String getNameById(String soql) {
+        String result = null;
+        try {
+
+            RestRequest restRequest = RestRequest.getRequestForQuery(context.getString(R.string.api_version), soql);
+
+            RestResponse response = client.sendSync(restRequest);
+
+            JSONArray resultado = response.asJSONObject().getJSONArray("records");
+            result = resultado.getJSONObject(0).getString("Name");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            Log.e("GETNAMEBYID", e.toString());
+        }
+        return result;
+    }
+
+    private String getId(String soql) {
+        String result = null;
+        try {
+
+            RestRequest restRequest = RestRequest.getRequestForQuery(context.getString(R.string.api_version), soql);
+
+            RestResponse response = client.sendSync(restRequest);
+
+            JSONArray resultado = response.asJSONObject().getJSONArray("records");
+            result = resultado.getJSONObject(0).getString("Id");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            Log.e("GETID", e.toString());
+        }
+        return result;
+    }
+
+    private class InsertMuestraTask extends AsyncTask<ArrayList<String[]>, Void, String> {
         @Override
         protected void onPreExecute() {
             mProgressDialog.setTitle("Conectando con Salesforce...");
@@ -265,17 +378,23 @@ public class Controller {
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
+        protected void onPostExecute(String result) {
             mProgressDialog.dismiss();
 
+            //String mTitle = (result ? "Finalizado con éxito" : "Se insertaron con errores");
 
-            String mTitle = (result ? "Finalizado con éxito" : "Se insertaron con errores");
+            if (result.indexOf("success") >= 0) {
+                result = "Insertado con éxito";
+            } else {
+                result = "No se ha podido completar la operación";
+            }
 
-            Toast.makeText(context, mTitle, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        protected Boolean doInBackground(ArrayList<String[]>... params) {
+        protected String doInBackground(ArrayList<String[]>... params) {
+            //android.os.Debug.waitForDebugger();
             Map sObject;
             String productoId;
             String name;
@@ -283,7 +402,8 @@ public class Controller {
             String cuentaId;
             String muestraId;
             ArrayList<Map> objetos = new ArrayList<>();
-            Boolean result = true;
+            RestResponse response;
+            String result = "error";
 
             try {
                 for (String[] arr : params[0]) {
@@ -320,51 +440,20 @@ public class Controller {
                     if (sobj.get("Cuenta__c") != null && sobj.get("Producto__c") != null) {
                         RestRequest restRequest = RestRequest.getRequestForCreate(context.getString(R.string.api_version), "MuestrasLineItem__c", sobj);
                         // Ejecuta Async
-                        client.sendAsync(restRequest, new RestClient.AsyncRequestCallback() {
-                            @Override
-                            public void onSuccess(RestRequest request, RestResponse response) {
-                                Log.d("GetIdTask", "Success");
-                            }
+                        response = client.sendSync(restRequest);
+                        result = response.toString();
 
-                            @Override
-                            public void onError(Exception exception) {
-                                try {
-                                    Log.e("InsertaMuestraTask", exception.getMessage());
-                                } catch(Exception e) {
-                                    Log.e("InsertaMuestraTask", e.getMessage());
-                                }
-                            }
-                        });
+                        Log.d("InsertarMuestrasTask", result);
                     }
                 }
 
             } catch (Exception e) {
                 Log.e("CreateProducto", e.toString());
-                result = false;
+                result = e.toString();
             }
 
-            return result;
-        }
-
-        private String getId(String soql) {
-            String result = null;
-            try {
-
-                RestRequest restRequest = RestRequest.getRequestForQuery(context.getString(R.string.api_version), soql);
-
-                RestResponse response = client.sendSync(restRequest);
-
-                JSONArray resultado = response.asJSONObject().getJSONArray("records");
-                result = resultado.getJSONObject(0).getString("Id");
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                Log.e("GETID", e.toString());
-            }
             return result;
         }
     }
+
 }

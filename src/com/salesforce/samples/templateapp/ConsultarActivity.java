@@ -78,10 +78,7 @@ public class ConsultarActivity extends SalesforceActivity {
             Controller control = new Controller(this, client, mProgressDialog);
 
             control.consultaMuestra(strRbd);
-
         }
     }
-
-
 }
 

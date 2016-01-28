@@ -40,11 +40,12 @@
                     android:text="RBD:"
                     android:layout_weight="1" />
 
-                <TextView
+                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/datos_rbd"
                     android:gravity="left"
+                    android:inputType="number"
                     android:text="8877"
                     android:layout_weight="1" />
             </LinearLayout>
@@ -112,11 +113,12 @@
                     android:text="Código de producto:"
                     android:layout_weight="1" />
 
-                <TextView
+                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/datos_product2_productcode"
                     android:gravity="left"
+                    android:inputType="number"
                     android:text="126108"
                     android:layout_weight="1" />
             </LinearLayout>
@@ -160,12 +162,13 @@
                     android:text="Cantidad:"
                     android:layout_weight="1" />
 
-                <TextView
+                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/datos_product2_cantidad"
                     android:gravity="left"
                     android:text="1"
+                    android:inputType="number"
                     android:layout_weight="1" />
             </LinearLayout>
 
@@ -190,10 +193,19 @@
                     android:id="@+id/datos_muestra_fecha"
                     android:gravity="left"
                     android:text="2015-01-28"
+                    android:inputType="date"
                     android:layout_weight="1" />
             </LinearLayout>
 
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onBtnGuardarDatos"
+                    android:text="Guardar Cambios" />
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
