@@ -8,6 +8,15 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="android:colorAccent">@color/accentColor</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/abc_secondary_text_material_light</item>
+    </style>
+
+    <style name="sm_titulo" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/abc_primary_text_material_light</item>
     </style>
 
     <style name="SMToolbar" parent="Theme.AppCompat.NoActionBar">

@@ -6,7 +6,16 @@
     android:layout_gravity="center_horizontal"
     android:id="@+id/consultar_vgroup"
     android:padding="10dp"
-    android:background="#ffffff">
+    android:background="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="2ASD6F2W6A2FD6F1A5S1F5"
+        android:id="@+id/consultar_id"
+        android:visibility="gone"
+        android:textColor="@color/textColorPrimary"
+        android:layout_weight="1" />
 
     <TextView
         android:layout_width="match_parent"

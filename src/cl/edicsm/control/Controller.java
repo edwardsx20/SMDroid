@@ -3,7 +3,9 @@ package cl.edicsm.control;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +17,12 @@ import com.salesforce.androidsdk.rest.RestClient;
 import com.salesforce.androidsdk.rest.RestRequest;
 import com.salesforce.androidsdk.rest.RestResponse;
 import com.salesforce.samples.templateapp.ConsultarActivity;
+import com.salesforce.samples.templateapp.DatosMuestraActivity;
 import com.salesforce.samples.templateapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -51,7 +55,7 @@ public class Controller {
         new ConsultaMuestraTask().execute(rbd);
     }
 
-    private void agregarProducto(String msg, String value) {
+    private void agregarProducto(String id, String msg, String value) {
         // Obtiene el grupo
         Activity activity = (Activity) context;
         LinearLayout parentLayout = (LinearLayout) activity.findViewById(R.id.consultar_root);
@@ -65,13 +69,103 @@ public class Controller {
 
         // Obtiene views
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.consultar_vgroup);
+        linearLayout.setClickable(true);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    LinearLayout productosLayout = (LinearLayout) v;
+                    TextView tv = (TextView) productosLayout.getChildAt(0);
+
+                    Log.d("Clicked", tv.getText().toString());
+
+                    String idMuestra = tv.getText().toString();
+
+                    new DatosMuestraTask().execute(idMuestra);
+
+                } catch(Exception e) {
+                    Log.e("ErrorClicked", v.toString());
+                }
+            }
+        });
+        TextView tvid = (TextView) linearLayout.findViewById(R.id.consultar_id);
         TextView et = (TextView) linearLayout.findViewById(R.id.consultar_txtproducto);
         TextView tv = (TextView) linearLayout.findViewById(R.id.consultar_txtcantidad);
 
+        tvid.setText(id);
         tv.setText(msg);
         et.setText(value);
 
         parentLayout.addView(linearLayout);
+    }
+
+    private class DatosMuestraTask extends AsyncTask<String, Void, Void> {
+        private Intent mIntent;
+
+        @Override
+        protected void onPostExecute(Void unused) {
+
+            mProgressDialog.dismiss();
+
+            context.startActivity(mIntent);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mProgressDialog.setTitle("Contactando con Salesforce...");
+            mProgressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            String id = params[0];
+
+            RestRequest restRequest;
+
+            String query = "SELECT Cantidad_respaldada__c, Fecha__c, Name, Producto__r.ProductCode, Producto__r.Name, Cuenta__r.RBD__c, Cuenta__r.Name, Cuenta__r.Calle_y_numero__c FROM MuestrasLineItem__c WHERE Id = '" + id + "'";
+            try {
+                restRequest = RestRequest.getRequestForQuery(context.getString(R.string.api_version), query);
+
+                RestResponse response = client.sendSync(restRequest);
+                JSONArray resultado = response.asJSONObject().getJSONArray("records");
+
+                JSONObject cuenta = resultado.getJSONObject(0).getJSONObject("Cuenta__r");
+                JSONObject producto = resultado.getJSONObject(0).getJSONObject("Producto__r");
+
+
+                String strCantidad = resultado.getJSONObject(0).getString("Cantidad_respaldada__c");
+                String strCuenta = cuenta.getString("Name");
+                String strRbd = cuenta.getString("RBD__c");
+                String strDireccion = cuenta.getString("Calle_y_Numero__c");
+
+                String strProductCode = producto.getString("ProductCode");
+                String strProductName = producto.getString("Name");
+                String strFecha = resultado.getJSONObject(0).getString("Fecha__c");
+
+                mIntent = new Intent(context, DatosMuestraActivity.class);
+                Bundle mBundle = new Bundle();
+
+                mBundle.putString("rbd", strRbd.substring(0, strRbd.indexOf(".")));
+                mBundle.putString("cuenta", strCuenta);
+                mBundle.putString("direccion", strDireccion);
+                mBundle.putString("productcode", strProductCode);
+                mBundle.putString("productname", strProductName);
+                mBundle.putString("cantidad", strCantidad.substring(0, strCantidad.indexOf(".")));
+                mBundle.putString("fecha", strFecha);
+
+                mIntent.putExtras(mBundle);
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
     }
 
     private class ConsultaMuestraTask extends AsyncTask<String, Void, ArrayList<String[]>> {
@@ -80,7 +174,7 @@ public class Controller {
         protected void onPostExecute(ArrayList<String[]> unused) {
             if(unused != null && unused.size() > 0) {
                 for(String[] vw : unused) {
-                    agregarProducto(vw[0], vw[1]);
+                    agregarProducto(vw[0], vw[1], vw[2]);
                 }
             } else {
                 Toast.makeText(context, "No se han encontrado datos.", Toast.LENGTH_SHORT).show();
@@ -111,13 +205,14 @@ public class Controller {
                     String cantidad = resultado.getJSONObject(i).getString("Cantidad_respaldada__c");
                     String name = resultado.getJSONObject(i).getString("Name");
                     String productcode = resultado.getJSONObject(i).getJSONObject("Producto__r").getString("ProductCode");
+                    String id = resultado.getJSONObject(i).getString("Id");
 
                     if (cantidad != null && cantidad.indexOf('.') > 0) {
                         cantidad = cantidad.substring(0, cantidad.indexOf('.'));
                     }
                     name = productcode + " - " + name;
 
-                    values = new String[] { cantidad, name };
+                    values = new String[] { id, cantidad, name };
                     result.add(values);
                 }
 
